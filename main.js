@@ -7,6 +7,8 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow,
     addWindow;
 
+process.env.NODE_ENV = 'production';
+
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
         width: 1024,
@@ -60,8 +62,29 @@ const mainMenuTemplate = [
                 }
             }
         ]
-    },
-    {
+    }
+]
+
+function createAddWindow() {
+    addWindow = new BrowserWindow({
+        width: 600,
+        height: 400,
+        title: 'Add Shopping List Item'
+    });
+
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addWindow.html'),
+        protocol: 'file',
+        slashes: true
+    }));
+
+    addWindow.on('close', function() {
+        addWindow = null;
+    });
+}
+
+if (process.env.NODE_ENV !== 'production') {
+    mainMenuTemplate.push({
         label: 'Developer Tools',
         submenu: [
             {
@@ -75,22 +98,5 @@ const mainMenuTemplate = [
                 }
             }
         ]
-    }
-]
-
-function createAddWindow() {
-    addWindow = new BrowserWindow({
-        width: 600,
-        height: 400
-    });
-
-    addWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'addWindow.html'),
-        protocol: 'file',
-        slashes: true
-    }));
-
-    addWindow.on('close', function() {
-        addWindow = null;
     });
 }
