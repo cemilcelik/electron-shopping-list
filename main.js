@@ -7,7 +7,7 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow,
     addWindow;
 
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'development';
 
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
@@ -69,7 +69,10 @@ function createAddWindow() {
     addWindow = new BrowserWindow({
         width: 600,
         height: 400,
-        title: 'Add Shopping List Item'
+        title: 'Add Shopping List Item',
+        frame: false,
+        alwaysOnTop: true,
+        transparent: true
     });
 
     addWindow.loadURL(url.format({
